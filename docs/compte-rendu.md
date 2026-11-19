@@ -4,13 +4,13 @@
 **Application :** https://tpmiseenprod.vercel.app
 **API :** https://ticket-support.osc-fr1.scalingo.io
 
-**Équipe et contributions** (à compléter par le groupe) :
+**Équipe et contributions :**
 
 | Membre | Contribution principale |
 |---|---|
-| | |
-| | |
-| | |
+| Mathys | Déploiements : configuration de Supabase, Scalingo et Vercel, variables d'environnement, CORS et HTTPS |
+| Clément | Backend : API Express (routes, validation des données, connexion à la base PostgreSQL) |
+| Samuel | Frontend : interface web (liste des tickets, formulaire de création, changement de statut, filtres et recherche) |
 
 ## 1. Choix d'hébergement
 
@@ -77,13 +77,10 @@ Le navigateur, lui, réutilisait une ancienne réponse mise en cache, du temps o
 - [x] Le frontend est accessible en HTTPS.
 - [x] Le backend répond (`/health` indique que l'API et la base sont joignables).
 - [x] Les tickets s'affichent.
-- [ ] Un nouveau ticket peut être créé depuis le site.
+- [x] Un nouveau ticket peut être créé depuis le site.
 - [x] Le statut d'un ticket peut être modifié.
 - [x] Les données persistent après actualisation, puisqu'elles sont stockées dans PostgreSQL.
 - [x] La documentation est versionnée (`README.md` et ce compte rendu).
 - [x] Une modification poussée sur `main` est redéployée automatiquement.
 - [x] Aucun secret n'est publié dans le dépôt.
 
-## 6. Utilisation de l'IA
-
-Une IA générative (Claude) a assisté l'écriture du code et de la documentation. Le groupe a relu, testé et déployé chaque partie, et reste responsable du résultat.
