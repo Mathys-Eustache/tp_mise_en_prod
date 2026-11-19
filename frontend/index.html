@@ -3,26 +3,134 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1">
-  <title>Tickets YNOV</title>
-  <style>
-    body {
-      margin: 0;
-      min-height: 100vh;
-      display: grid;
-      place-items: center;
-      font-family: system-ui, -apple-system, "Segoe UI", sans-serif;
-      background: #f3f6f8;
-      color: #15212b;
-    }
-    main { text-align: center; padding: 24px; }
-    h1 { margin: 0 0 8px; }
-    p { margin: 0; color: #586775; }
-  </style>
+  <meta name="theme-color" content="#f6f7fb">
+  <title>Clair — Centre de support</title>
+  <link rel="stylesheet" href="styles.css">
 </head>
 <body>
-  <main>
-    <h1>App de tickets</h1>
-    <p>En construction. Si tu vois cette page, le déploiement Vercel fonctionne.</p>
-  </main>
+  <div class="app-shell">
+    <aside class="sidebar" aria-label="Navigation principale">
+      <div class="brand">
+        <div class="brand-mark" aria-hidden="true">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M5 7.5 12 4l7 3.5v9L12 20l-7-3.5v-9Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="m8 10 4 2 4-2M12 12v4" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </div>
+        <div><div class="brand-name">clair</div><div class="brand-subtitle">ESPACE SUPPORT</div></div>
+      </div>
+
+      <p class="side-label">VOTRE ESPACE</p>
+      <nav class="nav-list" aria-label="Filtrer les tickets">
+        <button class="nav-item active" type="button" data-filter="all">
+          <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="4" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="4" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="4" y="14" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.7"/><rect x="14" y="14" width="6" height="6" rx="1.5" stroke="currentColor" stroke-width="1.7"/></svg></span>
+          Tous les tickets <span class="nav-count" data-count="all">—</span>
+        </button>
+        <button class="nav-item" type="button" data-filter="open">
+          <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 8v4l2.5 1.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></span>
+          Ouverts <span class="nav-count" data-count="open">—</span>
+        </button>
+        <button class="nav-item" type="button" data-filter="in_progress">
+          <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 7v5l-3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M17 3.5h3.5V7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          En cours <span class="nav-count" data-count="in_progress">—</span>
+        </button>
+        <button class="nav-item" type="button" data-filter="resolved">
+          <span class="nav-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="m8.5 12 2.3 2.3 4.7-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></span>
+          Résolus <span class="nav-count" data-count="resolved">—</span>
+        </button>
+      </nav>
+
+      <div class="sidebar-spacer"></div>
+      <div class="sidebar-note">
+        <div class="note-title">Un problème à signaler ?</div>
+        <p>Décrivez votre demande et notre équipe vous aidera dès que possible.</p>
+      </div>
+      <div class="sidebar-footer">Clair · Gestion des demandes</div>
+    </aside>
+
+    <main class="main">
+      <div class="topbar">
+        <span class="today" id="today"></span>
+        <button class="connection-button" id="connectionButton" type="button" aria-haspopup="dialog">
+          <span class="connection-dot" id="connectionDot"></span>
+          <span id="connectionLabel">Vérification de l’API…</span>
+          <svg aria-hidden="true" width="12" height="12" viewBox="0 0 24 24" fill="none"><path d="m9 18 6-6-6-6" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>
+        </button>
+      </div>
+
+      <header class="page-heading">
+        <div>
+          <div class="eyebrow">Bonjour, bienvenue</div>
+          <h1>Centre de support</h1>
+          <p class="page-description">Retrouvez et suivez toutes vos demandes au même endroit.</p>
+        </div>
+        <div class="date-chip" id="dateChip"></div>
+      </header>
+
+      <section class="stats" aria-label="Résumé des tickets">
+        <article class="stat-card">
+          <div class="stat-icon slate" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 4h10a2 2 0 0 1 2 2v14l-7-3-7 3V6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/><path d="M9 8h6M9 11h6" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div><div class="stat-value" data-stat="all">—</div><div class="stat-label">Total des tickets</div></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8" stroke="currentColor" stroke-width="1.7"/><path d="M12 8v4l2.5 1.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg></div>
+          <div><div class="stat-value" data-stat="open">—</div><div class="stat-label">À prendre en charge</div></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon amber" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M12 3.5a8.5 8.5 0 1 0 8.5 8.5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M12 7v5l-3 2" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/><path d="M17 3.5h3.5V7" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="stat-value" data-stat="in_progress">—</div><div class="stat-label">En cours de traitement</div></div>
+        </article>
+        <article class="stat-card">
+          <div class="stat-icon green" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="8.5" stroke="currentColor" stroke-width="1.7"/><path d="m8.5 12 2.3 2.3 4.7-5" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+          <div><div class="stat-value" data-stat="resolved">—</div><div class="stat-label">Demandes résolues</div></div>
+        </article>
+      </section>
+
+      <div class="content-grid">
+        <section class="panel" aria-labelledby="ticketsHeading">
+          <div class="panel-heading">
+            <div><h2 class="panel-title" id="ticketsHeading">Demandes récentes</h2><p class="panel-subtitle">Consultez et mettez à jour les tickets</p></div>
+            <span class="ticket-count" id="visibleCount"></span>
+          </div>
+          <div class="ticket-tools">
+            <label class="search-wrap">
+              <span class="sr-only">Rechercher un ticket</span>
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="10.8" cy="10.8" r="6.8" stroke="currentColor" stroke-width="1.8"/><path d="m16 16 4 4" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              <input class="search-input" id="searchInput" type="search" placeholder="Rechercher une demande…" autocomplete="off">
+            </label>
+          </div>
+          <div class="ticket-list" id="ticketList" aria-live="polite">
+            <div class="empty-state"><div class="empty-icon" aria-hidden="true"><svg viewBox="0 0 24 24" fill="none"><path d="M7 4h10a2 2 0 0 1 2 2v14l-7-3-7 3V6a2 2 0 0 1 2-2Z" stroke="currentColor" stroke-width="1.7" stroke-linejoin="round"/></svg></div><p class="empty-title">Chargement des demandes…</p></div>
+          </div>
+        </section>
+
+        <section class="panel create-panel" aria-labelledby="createHeading">
+          <div class="form-heading">
+            <h2 id="createHeading">Nouvelle demande</h2>
+            <p>Expliquez-nous ce qui ne fonctionne pas, nous sommes là pour vous aider.</p>
+          </div>
+          <form id="ticketForm">
+            <div class="form-field">
+              <label for="titleInput">Objet de la demande</label>
+              <input class="field" id="titleInput" name="title" type="text" maxlength="120" placeholder="Ex. : Impossible d’accéder à ma messagerie" required>
+              <div class="field-hint"><span>Soyez aussi précis que possible</span><span id="titleCount">0 / 120</span></div>
+            </div>
+            <div class="form-field">
+              <label for="descriptionInput">Description</label>
+              <textarea class="field" id="descriptionInput" name="description" maxlength="2000" placeholder="Décrivez le problème rencontré et les étapes pour le reproduire…" required></textarea>
+              <div class="field-hint"><span>Minimum 10 caractères</span><span id="descriptionCount">0 / 2000</span></div>
+            </div>
+            <button class="submit-button" id="submitButton" type="submit">
+              <svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><path d="M12 5v14M5 12h14" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+              Envoyer la demande
+            </button>
+            <p class="form-footnote"><svg aria-hidden="true" viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9" stroke="currentColor" stroke-width="1.7"/><path d="M12 11v5m0-8h.01" stroke="currentColor" stroke-width="1.7" stroke-linecap="round"/></svg>Votre demande sera enregistrée et visible dans la liste des tickets.</p>
+          </form>
+        </section>
+      </div>
+    </main>
+  </div>
+
+  <div id="modalRoot"></div>
+  <div id="toastRoot" aria-live="polite"></div>
+
+  <script src="app.js" defer></script>
 </body>
 </html>
