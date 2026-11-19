@@ -14,12 +14,16 @@ app.disable('x-powered-by');
 
 // CORS : seules les origines listées dans CORS_ORIGIN (séparées par des virgules)
 // peuvent appeler l'API depuis un navigateur. En production : l'URL Vercel.
+// Le navigateur envoie l'origine sans "/" final : on retire donc les espaces, les guillemets
+// et les "/" finaux saisis par erreur, sinon la comparaison exacte échoue.
 const origines = (process.env.CORS_ORIGIN || '')
   .split(',')
-  .map((origine) => origine.trim())
+  .map((origine) => origine.trim().replace(/^["']+|["']+$/g, '').replace(/\/+$/, ''))
   .filter(Boolean);
 if (origines.length === 0) {
   console.warn('CORS_ORIGIN non défini : toutes les origines sont autorisées (à éviter en production).');
+} else {
+  console.log(`CORS autorisé pour : ${origines.join(', ')}`);
 }
 app.use(cors({ origin: origines.length > 0 ? origines : '*' }));
 
