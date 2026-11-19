@@ -8,10 +8,11 @@
       var searchTerm = "";
       var loadError = null;
       var toastTimer;
+      // "api" = valeur attendue par le backend (colonne statut de la table tickets)
       var statusDefinitions = {
-        open: { label: "Ouvert", className: "open" },
-        in_progress: { label: "En cours", className: "progress" },
-        resolved: { label: "Résolu", className: "resolved" }
+        open: { label: "Ouvert", className: "open", api: "ouvert" },
+        in_progress: { label: "En cours", className: "progress", api: "en_cours" },
+        resolved: { label: "Résolu", className: "resolved", api: "resolu" }
       };
 
       var today = new Date();
@@ -208,7 +209,7 @@
           await request("/api/tickets/" + encodeURIComponent(ticket.id), {
             method: "PATCH",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ status: nextStatus })
+            body: JSON.stringify({ statut: statusDefinitions[nextStatus].api })
           });
           ticket.status = nextStatus;
           render();
@@ -252,7 +253,7 @@
           await request("/api/tickets", {
             method: "POST",
             headers: { "Content-Type": "application/json" },
-            body: JSON.stringify({ title: title, description: description })
+            body: JSON.stringify({ titre: title, description: description })
           });
           form.reset();
           document.getElementById("titleCount").textContent = "0 / 120";
@@ -298,10 +299,10 @@
         var heading = makeElement("h2", "", "Connexion au backend");
         heading.id = "apiDialogTitle";
         dialog.appendChild(heading);
-        dialog.appendChild(makeElement("p", "modal-copy", "Saisissez l’URL publique de votre API (par exemple https://mon-api.onrender.com). L’adresse est enregistrée uniquement dans ce navigateur."));
+        dialog.appendChild(makeElement("p", "modal-copy", "Saisissez l’URL publique de votre API (par exemple https://mon-api.osc-fr1.scalingo.io). L’adresse est enregistrée uniquement dans ce navigateur."));
         var field = makeElement("input", "field");
         field.type = "url";
-        field.placeholder = "https://mon-api.onrender.com";
+        field.placeholder = "https://mon-api.osc-fr1.scalingo.io";
         field.value = apiBase;
         field.setAttribute("aria-label", "URL de l’API");
         field.autocomplete = "url";
